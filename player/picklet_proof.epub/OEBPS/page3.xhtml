@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:epub="http://www.idpf.org/2007/ops"
+  xml:lang="ja"
+  class="hltr"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../style/book-style.css" />
+    <title>Event Logger</title>
+    <style type="text/css">
+      p {
+        margin: 0;
+        padding: 0;
+        font-size: 9px;
+      }
+    </style>
+    <script type="text/javascript">
+      <![CDATA[
+
+                  window.onload = function(){
+
+                  	var result = document.getElementById("result"),
+                  		exclude = [],
+                  		obj;
+
+                  	// 除外イベント
+                  	exclude.push("deviceorientation");
+                  	exclude.push("devicemotion");
+
+                  	function eventDamp(e){
+                  		var line = "Fire: ";
+                  		var t = new Date();
+                  		var p = document.createElement('p');
+                  //		console.log( e );
+
+                  		if ( e.timeStamp && exclude.indexOf( e.type ) < 0 ) {
+                  			t.setTime( e.timeStamp );
+                  			line += [ t.getHours(),t.getMinutes(), t.getSeconds(), t.getMilliseconds() ].join(":");
+                  			line += [ " - ", e.type ,"<br />" ].join("");
+                  			p.innerHTML = line;
+                  			result.insertBefore(p, result.firstChild);
+                  		}
+                  	}
+
+                  	for ( obj in window ) {
+                  		if(obj.substr(0,2) === "on" ) {
+                  			window[ obj ] = function(obj){
+                  				eventDamp( obj );
+                  			}
+                  		}
+                  	}
+
+                  	// window.onload
+                  	var line = "Fire: ";
+                  	var t = new Date();
+                  	var p = document.createElement('p');
+                  	line += [ t.getHours(),t.getMinutes(), t.getSeconds(), t.getMilliseconds() ].join(":");
+                  	line += [ " - window.onload<br />" ].join("");
+                  	p.innerHTML = line;
+                  	result.insertBefore(p, result.firstChild);
+
+                  }
+                  ]]>
+    </script>
+  </head>
+  <body class="p-text">
+    <div class="main">
+      <h1 id="toc-001">Event Logger page 1</h1>
+
+      <input type="text" value="hello" />
+      <input type="range" name="thing" id="thing" />
+
+      <div id="result"></div>
+    </div>
+  </body>
+</html>

@@ -3,178 +3,199 @@
   <head>
     <title>This is a Picklet</title>
     <!-- <link rel="stylesheet" type="text/css" href="style.css" /> -->
-    <style>
-body {
-  /* touch-action: none; */
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  /* -webkit-overflow-scrolling: none; */
-}
-@media (pointer: coarse) {
-  /* Styles for touch input */
-  body {
-    background-color: blue;
-  }
-}
-input[type="range"] {
-  opacity: 1;
-  -webkit-appearance: none; /* for MacOS Books 1.5 */
-  appearance: none;
-  position: absolute;
-  /* bottom: 20px; */
-  bottom: 0;
-  pointer-events: none;
-  /* direction: rtl; */
-  width: 100%;
-  height: 68px;
-  /* background: rgba(255, 255, 255, 0.6); */
-  /* border-radius: 5px; */
-}
-input[type="range"]::-webkit-slider-runnable-track {
-  -webkit-appearance: initial;
-  pointer-events: none;
-  /* touch-action: initial; */
-  /* touch-action: manipulation; */
-}
-input[type="range"]::-webkit-slider-thumb {
-  /* pointer-events: auto; */
-  pointer-events: fill;
-  /* touch-action: none; */
-  -webkit-appearance: none; /* for MacOS Books 1.5 */
-  /* appearance: none; */
-  width: 64px;
-  height: 48px;
-  border-radius: 10px;
-  /* cursor: pointer; */
-  background-color: red;
-}
-#output {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-    </style>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=320, height=480, initial-scale=1.0" />
+    <!-- <meta name="viewport" content="initial-scale=1.0" /> -->
+    <meta name="viewport" content="width=640, height=744, user-scalable=no" />
+    <style>
+      html, body {
+        touch-action: none;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        -webkit-overflow-scrolling: none;
+        /* overflow: hidden; */
+      }
+      #svg_document {
+        background-color: orange;
+        height: 100%;
+      }
+      @media (min-aspect-ratio: 744/640) {
+        body {
+          background-color: aquamarine;
+          /* height: 100%; */
+        }
+      }
+      /* @media (pointer: coarse) {
+        /* Styles for touch input */
+        /* body {
+          background-color: blue;
+        } */
+      /* } */
+      .controls {
+        /* height: 48px; */
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        /* bottom: 20px; */
+        /* bottom: -48px; */
+      }
+      input[type="range"] {
+        opacity: 1;
+        -webkit-appearance: none; /* for MacOS Books 1.5 */
+        appearance: none;
+        pointer-events: none;
+        /* direction: rtl; */
+        width: 100%;
+        height: 68px;
+        /* background: rgba(255, 255, 255, 0.6); */
+        /* border-radius: 5px; */
+        opacity: 0.5;
+      }
+      input[type="range"]::-webkit-slider-runnable-track {
+        -webkit-appearance: initial;
+        pointer-events: none;
+        /* touch-action: initial; */
+        /* touch-action: manipulation; */
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        /* pointer-events: auto; */
+        pointer-events: fill;
+        /* touch-action: none; */
+        -webkit-appearance: none; /* for MacOS Books 1.5 */
+        /* appearance: none; */
+        width: 64px;
+        height: 48px;
+        border-radius: 10px;
+        /* cursor: pointer; */
+        background-color: red;
+      }
+      #output {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    </style>
     <!-- <script type="text/javascript" src="main.js"> -->
     <script type="text/javascript">
-var slider
-var svg
-var body
-var output
-var animate1
-window.addEventListener("DOMContentLoaded", function() {
-  reset();
-}, false);
-function ignore(evt) {
-  return false;
-}
-function setCurrentTime(evt) {
-  // output.innerHTML = evt.target.value;
-  // output.innerHTML = evt.target.value;
-  // output.innerHTML = evt.type;
-  output.innerHTML = evt.target.value;
-  svg.setCurrentTime(evt.target.value);
-}
-function reset(evt) {
-  body = document.getElementsByTagName("body")[0];
+      var slider;
+      var svg;
+      var body;
+      var output;
+      var animate1;
+      window.addEventListener(
+        "DOMContentLoaded",
+        reset,
+        false
+      );
+      function ignore(evt) {
+        return false;
+      }
+      function setCurrentTime(evt) {
+        // output.innerHTML = evt.target.value;
+        // output.innerHTML = evt.target.value;
+        // output.innerHTML = evt.type;
+        output.innerHTML = evt.target.value;
+        svg.setCurrentTime(evt.target.value);
+      }
+      function reset(evt) {
+        body = document.getElementsByTagName("body")[0];
 
-  output = document.getElementById("output");
+        output = document.getElementById("output");
 
-  output.innerHTML = window.ontouchstart
+        output.innerHTML = window.ontouchstart;
 
-  document.body.style.cssText = "background-color: yellow !important";
+        // document.body.style.cssText = "background-color: yellow !important";
 
-  console.log("reset()");
-  // NOTE: hardcoded svg element id... svg_document
-  svg = document.getElementById("svg_document");
-  svg.pauseAnimations();
+        console.log("reset()");
+        // NOTE: hardcoded svg element id... svg_document
+        svg = document.getElementById("svg_document");
+        svg.pauseAnimations();
 
-  animate1 = document.getElementById("animate1");
-  animate1.setAttribute("begin", "0s");
+        animate1 = document.getElementById("animate1");
+        animate1.setAttribute("begin", "0s");
 
-  slider = document.getElementById("slider");
-  slider.ontouchstart = function (evt) {
-    // repeat setting begin here because iPhone iBooks app will
-    // start animations playing on Resume from menu functions
-    animate1.setAttribute("begin", "0s");
-    setCurrentTime(evt);
-    svg.pauseAnimations();
-  }
-  slider.ontouchmove = function (evt) {
-    /* for stupid touch based Books range input, fake the range input events */
-    output.innerHTML = "ontouchmove " + ((evt.touches[0].clientX));
-    slider.value = (evt.touches[0].clientX) / slider.clientWidth;
-    evt.preventDefault();
-    setCurrentTime(evt);
-  }
-  slider.oninput = setCurrentTime /* for normal mouse-based range input */
-}
+        slider = document.getElementById("slider");
+        slider.ontouchstart = function (evt) {
+          // repeat setting begin here because iPhone iBooks app will
+          // start animations playing on Resume from menu functions
+          animate1.setAttribute("begin", "0s");
+          setCurrentTime(evt);
+          svg.pauseAnimations();
+        };
+        slider.ontouchmove = function (evt) {
+          /* for stupid touch based Books range input, fake the range input events */
+          output.innerHTML = "ontouchmove " + evt.touches[0].clientX;
+          slider.value = evt.touches[0].clientX / slider.clientWidth;
+          evt.preventDefault();
+          setCurrentTime(evt);
+        };
+        slider.oninput =
+          setCurrentTime; /* for normal mouse-based range input */
+      }
     </script>
   </head>
 
   <body>
     <div id="output"></div>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      xmlns:dc="http://purl.org/dc/elements/1.1/"
-      xmlns:cc="http://web.resource.org/cc/"
-      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-      xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-      xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-      version="1.1"
-      baseProfile="full"
-      width="320px"
-      height="480px"
-      viewBox="0 0 640 744"
-      preserveAspectRatio="xMidYMid meet"
-      id="svg_document"
-      style="zoom: 1"
-    >
-      <title id="svg_document_title">Untitled.svg</title>
-      <defs id="svg_document_defs"></defs>
-      <g id="main_group">
-        <rect
-          x="-1px"
-          height="744px"
-          y="-2px"
-          id="background_rect"
-          width="640px"
-          fill="#90ee90"
-        ></rect>
-      </g>
-      <path
-        stroke="#000000"
-        id="path1"
-        stroke-width="3px"
-        d="M133,503 C175,557 476,601 438,476 "
-        fill="none"
-        transform=""
+    <!-- <div class="content"> -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:dc="http://purl.org/dc/elements/1.1/"
+        xmlns:cc="http://web.resource.org/cc/"
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+        version="1.1"
+        viewBox="0 0 640 744"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMin meet"
+        id="svg_document"
       >
-        <animate
-          attributeName="d"
-          values="M133,503 C175,557 476,601 438,476;M134,504 C113,440 397,352 439,477 ;"
-          begin="indefinite"
-          id="animate1"
-          dur="1s"
-          fill="freeze"
-          repeatCount="indefinite"
-        ></animate>
-      </path>
-      <path
-        stroke="#000000"
-        visibility="hidden"
-        stroke-width="3px"
-        id="path2"
-        d="M134,504 C113,440 397,352 439,477 "
-        fill="none"
-        transform=""
-      ></path>
-    </svg>
+        <title id="svg_document_title">Untitled.svg</title>
+        <defs id="svg_document_defs"></defs>
+        <g id="main_group">
+          <rect
+            x="0px"
+            height="744px"
+            y="0px"
+            id="background_rect"
+            width="640px"
+            fill="#90ee90"
+          ></rect>
+        </g>
+        <path
+          stroke="#000000"
+          id="path1"
+          stroke-width="3px"
+          d="M133,503 C175,557 476,601 438,476 "
+          fill="none"
+          transform=""
+        >
+          <animate
+            attributeName="d"
+            values="M133,503 C175,557 476,601 438,476;M134,504 C113,440 397,352 439,477 ;"
+            begin="indefinite"
+            id="animate1"
+            dur="1s"
+            fill="freeze"
+            repeatCount="indefinite"
+          ></animate>
+        </path>
+        <path
+          stroke="#000000"
+          visibility="hidden"
+          stroke-width="3px"
+          id="path2"
+          d="M134,504 C113,440 397,352 439,477 "
+          fill="none"
+          transform=""
+        ></path>
+      </svg>
+    <!-- </div> -->
     <div class="controls">
-      <!-- oninput="setCurrentTime(event)" -->
       <input
         id="slider"
         name="slider"

@@ -9,7 +9,7 @@
     <dc:date>2022-09-17</dc:date>
     <dc:rights>&#169;  Stewart Haines</dc:rights>
     <meta property="role" refines="#creator" scheme="marc:relators">aut</meta>
-    <meta property="dcterms:modified">2022-09-18T15:01:34Z</meta>
+    <meta property="dcterms:modified">2022-09-29T18:17:00Z</meta>
     <meta property="rendition:layout">pre-paginated</meta>
     <meta property="rendition:spread">none</meta>
     <meta property="rendition:orientation">portrait</meta>
