@@ -34,7 +34,7 @@
       /* } */
       .controls {
         /* height: 48px; */
-        position: fixed;
+        position: absolute;
         width: 100%;
         bottom: 0;
         height: 68px;
@@ -113,8 +113,8 @@
         svg = document.getElementById("svg_document");
         svg.pauseAnimations();
 
-        animate1 = document.getElementById("animate1");
-        animate1.setAttribute("begin", "0s");
+        // animate1 = document.getElementById("animate1");
+        // animate1.setAttribute("begin", "0s");
 
         slider = document.getElementById("slider");
         slider.ontouchstart = function (evt) {
@@ -167,33 +167,6 @@
             fill="#90ee00"
           ></rect>
         </g>
-        <path
-          stroke="#000000"
-          id="path1"
-          stroke-width="3px"
-          d="M133,503 C175,557 476,601 438,476 "
-          fill="none"
-          transform=""
-        >
-          <animate
-            attributeName="d"
-            values="M133,503 C175,557 476,601 438,476;M134,504 C113,440 397,352 439,477 ;"
-            begin="indefinite"
-            id="animate1"
-            dur="1s"
-            fill="freeze"
-            repeatCount="indefinite"
-          ></animate>
-        </path>
-        <path
-          stroke="#000000"
-          visibility="hidden"
-          stroke-width="3px"
-          id="path2"
-          d="M134,504 C113,440 397,352 439,477 "
-          fill="none"
-          transform=""
-        ></path>
       </svg>
     <!-- </div> -->
     <div class="controls">

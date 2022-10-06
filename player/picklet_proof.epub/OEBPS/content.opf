@@ -21,12 +21,14 @@
     <item id="cover.xhtml" href="cover.xhtml" media-type="application/xhtml+xml" properties="svg"/>
     <item id="page1" href="page1.xhtml" media-type="application/xhtml+xml" properties="scripted svg"/>
     <item id="page2" href="page2.xhtml" media-type="application/xhtml+xml" properties="scripted"/>
+    <item id="page3" href="page3.xhtml" media-type="application/xhtml+xml" properties="scripted"/>
     <item id="main.js" href="main.js" media-type="application/javascript"/>
     <item id="style.css" href="style.css" media-type="text/css"/>
   </manifest>
   <spine toc="ncx">
     <itemref idref="page1" linear="yes"/>
     <itemref idref="page2" linear="yes"/>
+    <itemref idref="page3" linear="yes"/>
   </spine>
   <guide>
    <reference title="Cover page" type="cover" href="cover.xhtml"/>
