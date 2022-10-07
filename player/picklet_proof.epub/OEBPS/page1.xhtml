@@ -6,7 +6,8 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <!-- <meta name="viewport" content="initial-scale=1.0" /> -->
     <!-- <meta name="viewport" content="width=320, height=480, user-scalable=no, initial-scale=1.0, maximum-scale=1.0" /> -->
-    <meta name="viewport" content="width=320, height=492" />
+    <!-- <meta name="viewport" content="width=320, height=492" /> -->
+    <meta name="viewport" content="width=320, height=568" />
     <style>
       @media screen and (min-width: 320px) {
         #svg_document {
@@ -69,7 +70,7 @@
       input[type="range"]::-webkit-slider-runnable-track {
         -webkit-appearance: initial;
         pointer-events: none;
-        opacity: 0;
+        /* opacity: 0.5; */
         /* touch-action: initial; */
         /* touch-action: manipulation; */
       }
@@ -94,6 +95,7 @@
     </style>
     <!-- <script type="text/javascript" src="main.js"> -->
     <script type="text/javascript">
+      <![CDATA[
       var slider;
       var svg;
       var slider_svg;
@@ -101,17 +103,41 @@
       var output;
       var animate1;
       var animate2;
+      var dragging = false;
       window.addEventListener("DOMContentLoaded", reset, false);
       function ignore(evt) {
         return false;
+      }
+      function setBegin(value) {
+        console.log("setBegin(" + value + ")");
+        ["animate", "animateTransform"].forEach(function(tag) {
+          console.log(tag);
+          var c = document.getElementsByTagName(tag);
+          var i;
+            for (i = 0; i < c.length; i++) {
+              var el = c[i];
+              el.setAttribute("begin", value);
+              // el.setAttribute("repeatCount", value == "indefinite" ? "1" : "indefinte");
+              console.log("setting begin on " + el);
+            }
+        })
+        var s = document.getElementsByTagName("svg");
+        for (var i = 0; i < s.length; i++) {
+          var el = s[i];
+          el.pauseAnimations();
+        }
       }
       function setCurrentTime(evt) {
         // output.innerHTML = evt.target.value;
         // output.innerHTML = evt.target.value;
         // output.innerHTML = evt.type;
+        if(!dragging) {
+          setBegin("0s");
+        }
         output.innerHTML = evt.target.value;
         svg.setCurrentTime(evt.target.value);
         slider_svg.setCurrentTime(evt.target.value);
+        dragging = true;
       }
       function reset(evt) {
         body = document.getElementsByTagName("body")[0];
@@ -136,28 +162,45 @@
         console.log("reset()");
         // NOTE: hardcoded svg element id... svg_document
         svg = document.getElementById("svg_document");
-        svg.pauseAnimations();
+        // svg.pauseAnimations();
 
         slider_svg = document.getElementById("slider_svg");
-        slider_svg.pauseAnimations();
+        // slider_svg.pauseAnimations();
 
-        animate1 = document.getElementById("animate1");
-        animate1.setAttribute("begin", "0s");
-        animate2 = document.getElementById("animate2");
-        animate2.setAttribute("begin", "0s");
+        // setBegin("0s");
+        // animate1 = document.getElementById("animate1");
+        // animate1.setAttribute("begin", "0s");
+        // animate2 = document.getElementById("animate2");
+        // animate2.setAttribute("begin", "0s");
+
+        // var focus_dummy = document.getElementById("focus_dummy");
+        window.onfocus = function(evt) {
+          // evt.preventDefault();
+          // console.log(evt);
+          // svg.pauseAnimations();
+          // slider_svg.pauseAnimations();
+          setBegin("indefinite");
+          slider.value = 0.9999;
+          slider.dispatchEvent(new window.Event("input", { bubbles: true }));
+          console.log("body focus()");
+          // return false;
+        };
+        // focus_dummy.focus();
 
         slider = document.getElementById("slider");
-        slider.value = 0.9999;
-        var touch_offset_x;
+        // var touch_offset_x;
         slider.ontouchstart = function (evt) {
           // repeat setting begin here because iPhone iBooks app will
           // start animations playing on Resume from menu functions
-          animate1.setAttribute("begin", "0s");
+          // animate1.setAttribute("begin", "0s");
+          setBegin("0s");
           setCurrentTime(evt);
-          svg.pauseAnimations();
-          slider_svg.pauseAnimations();
-          touch_offset_x = evt.touches[0].clientX - evt.target.clientX;
-          output.innerHTML = slider.getBoundingClientRect().left;
+          // svg.pauseAnimations();
+          // slider_svg.pauseAnimations();
+          // touch_offset_x = evt.touches[0].clientX - evt.target.clientX;
+          // output.innerHTML = slider.getBoundingClientRect().left;
+          // animate1.setAttribute("begin", "0s");
+          // animate2.setAttribute("begin", "0s");
         };
         slider.ontouchmove = function (evt) {
           /* for stupid touch based Books range input, fake the range input events */
@@ -166,11 +209,31 @@
           evt.preventDefault();
           setCurrentTime(evt);
         };
+        slider.ontouchend = function (evt) {
+          // animate1.setAttribute("begin", "indefinite");
+          // animate2.setAttribute("begin", "indefinite");
+          // focus_dummy.focus();
+          setBegin("indefinite");
+          slider.value = 0.9999;
+          slider.dispatchEvent(new window.Event("input", { bubbles: true }));
+          dragging = false;
+        }
         slider.oninput =
           setCurrentTime; /* for normal mouse-based range input */
+        // for desktop browser and iBooks on macos
+        slider.onchange = function() {
+          setBegin("indefinite");
+          slider.value = 0.9999;
+          slider.dispatchEvent(new window.Event("input", { bubbles: true }));
+          dragging = false;
+        }
+          // set initial value to max (setting value=1 would wrap the animation)
+        slider.value = 0.9999;
+
         // set initial state of svg by faking a touch input event on the slider
         slider.dispatchEvent(new window.Event("input", { bubbles: true }));
       }
+      ]]>
     </script>
   </head>
 
@@ -202,6 +265,14 @@
           id="background_rect"
           width="768px"
           fill="#90ee90"
+        ></rect>
+        <rect
+          x="0px"
+          height="224px"
+          y="1024px"
+          id="background_rect"
+          width="768px"
+          fill="#eeff90"
         ></rect>
       </g>
       <path
@@ -266,7 +337,7 @@
         <rect x="0" width="200" height="150" rx="15">
           <animateTransform
             attributeName="transform"
-            begin="0s"
+            begin="indefinite"
             type="translate"
             from="0 0"
             to="568 0"
@@ -286,5 +357,6 @@
         step="0.0001"
       />
     </div>
+    <!-- <input id="focus_dummy"/> -->
   </body>
 </html>
