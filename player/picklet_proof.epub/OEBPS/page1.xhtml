@@ -6,16 +6,20 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <!-- <meta name="viewport" content="initial-scale=1.0" /> -->
     <!-- <meta name="viewport" content="width=320, height=480, user-scalable=no, initial-scale=1.0, maximum-scale=1.0" /> -->
+    <meta name="viewport" content="width=320, height=492" />
     <style>
       @media screen and (min-width: 320px) {
         #svg_document {
           /* height: 480px; */
         }
       }
-      html, body {
+      html,
+      body {
         touch-action: none;
         width: 100%;
         height: 100%;
+        /* width: 320px;
+        height: 480px; */
         padding: 0;
         margin: 0;
         -webkit-overflow-scrolling: none;
@@ -23,7 +27,7 @@
       }
       #svg_document {
         background-color: orange; /* #90ee90; */
-        height: 100%;
+        /* height: 100%; */
       }
       @media (min-aspect-ratio: 744/640) {
         body {
@@ -33,20 +37,25 @@
       }
       /* @media (pointer: coarse) {
         /* Styles for touch input */
-        /* body {
+      /* body {
           background-color: blue;
         } */
       /* } */
       .controls {
         /* height: 48px; */
-        position: absolute;
+        position: fixed;
         width: 100%;
-        bottom: 0;
+        bottom: -6px;
         /* bottom: 20px; */
         /* bottom: -48px; */
       }
+      .controls svg {
+        position: absolute;
+        /* bottom: 0; */
+      }
       input[type="range"] {
-        opacity: 1;
+        margin: 0;
+        opacity: 0;
         -webkit-appearance: none; /* for MacOS Books 1.5 */
         appearance: none;
         pointer-events: none;
@@ -55,16 +64,18 @@
         height: 20vw;
         /* background: rgba(255, 255, 255, 0.6); */
         /* border-radius: 5px; */
-        opacity: 0.5;
+        /* opacity: 0.5; */
       }
       input[type="range"]::-webkit-slider-runnable-track {
         -webkit-appearance: initial;
         pointer-events: none;
+        opacity: 0;
         /* touch-action: initial; */
         /* touch-action: manipulation; */
       }
       input[type="range"]::-webkit-slider-thumb {
         /* pointer-events: auto; */
+        border: none;
         pointer-events: fill;
         /* touch-action: none; */
         -webkit-appearance: none; /* for MacOS Books 1.5 */
@@ -85,15 +96,12 @@
     <script type="text/javascript">
       var slider;
       var svg;
+      var slider_svg;
       var body;
       var output;
       var animate1;
       var animate2;
-      window.addEventListener(
-        "DOMContentLoaded",
-        reset,
-        false
-      );
+      window.addEventListener("DOMContentLoaded", reset, false);
       function ignore(evt) {
         return false;
       }
@@ -103,6 +111,7 @@
         // output.innerHTML = evt.type;
         output.innerHTML = evt.target.value;
         svg.setCurrentTime(evt.target.value);
+        slider_svg.setCurrentTime(evt.target.value);
       }
       function reset(evt) {
         body = document.getElementsByTagName("body")[0];
@@ -115,10 +124,12 @@
         // output.innerHTML = window.ontouchstart;
         // output.innerHTML = window.visualViewport.scale;
 
-        window.visualViewport.addEventListener('resize', function(event) {
-          event.preventDefault();
-          // output.innerHTML = window.visualViewport.scale;
-        });
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener("resize", function (event) {
+            event.preventDefault();
+            // output.innerHTML = window.visualViewport.scale;
+          });
+        }
 
         // document.body.style.cssText = "background-color: yellow !important";
 
@@ -127,28 +138,38 @@
         svg = document.getElementById("svg_document");
         svg.pauseAnimations();
 
+        slider_svg = document.getElementById("slider_svg");
+        slider_svg.pauseAnimations();
+
         animate1 = document.getElementById("animate1");
         animate1.setAttribute("begin", "0s");
         animate2 = document.getElementById("animate2");
         animate2.setAttribute("begin", "0s");
 
         slider = document.getElementById("slider");
+        slider.value = 0.9999;
+        var touch_offset_x;
         slider.ontouchstart = function (evt) {
           // repeat setting begin here because iPhone iBooks app will
           // start animations playing on Resume from menu functions
           animate1.setAttribute("begin", "0s");
           setCurrentTime(evt);
           svg.pauseAnimations();
+          slider_svg.pauseAnimations();
+          touch_offset_x = evt.touches[0].clientX - evt.target.clientX;
+          output.innerHTML = slider.getBoundingClientRect().left;
         };
         slider.ontouchmove = function (evt) {
           /* for stupid touch based Books range input, fake the range input events */
           output.innerHTML = "ontouchmove " + evt.touches[0].clientX;
-          slider.value = evt.touches[0].clientX / slider.clientWidth;
+          slider.value =  evt.touches[0].clientX / slider.clientWidth;
           evt.preventDefault();
           setCurrentTime(evt);
         };
         slider.oninput =
           setCurrentTime; /* for normal mouse-based range input */
+        // set initial state of svg by faking a touch input event on the slider
+        slider.dispatchEvent(new window.Event("input", { bubbles: true }));
       }
     </script>
   </head>
@@ -156,51 +177,51 @@
   <body>
     <div id="output"></div>
     <!-- <div class="content"> -->
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:dc="http://purl.org/dc/elements/1.1/"
-        xmlns:cc="http://web.resource.org/cc/"
-        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-        version="1.1"
-        viewBox="0 0 320 480"
-        width="100%"
-        height="100%"
-        preserveAspectRatio="xMidYMin meet"
-        id="svg_document"
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:cc="http://web.resource.org/cc/"
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+      xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+      version="1.1"
+      viewBox="0 0 768 1024"
+      width="100%"
+      height="100%"
+      preserveAspectRatio="xMidYMin meet"
+      id="svg_document"
+    >
+      <title id="svg_document_title">Untitled.svg</title>
+      <defs id="svg_document_defs"></defs>
+      <g id="main_group">
+        <rect
+          x="0px"
+          height="1024px"
+          y="0px"
+          id="background_rect"
+          width="768px"
+          fill="#90ee90"
+        ></rect>
+      </g>
+      <path
+        stroke="#000000"
+        id="path1"
+        stroke-width="3px"
+        d="M133,503 C175,557 476,601 438,476 "
+        fill="none"
+        transform=""
       >
-        <title id="svg_document_title">Untitled.svg</title>
-        <defs id="svg_document_defs"></defs>
-        <g id="main_group">
-          <rect
-            x="0px"
-            height="480px"
-            y="0px"
-            id="background_rect"
-            width="320px"
-            fill="#90ee90"
-          ></rect>
-        </g>
-        <path
-          stroke="#000000"
-          id="path1"
-          stroke-width="3px"
-          d="M133,503 C175,557 476,601 438,476 "
-          fill="none"
-          transform=""
-        >
         <animate
-            attributeName="d"
-            values="M133,503 C175,557 476,601 438,476;M134,504 C113,440 397,352 439,477 ;"
-            begin="indefinite"
-            id="animate1"
-            dur="1s"
-            fill="freeze"
-            repeatCount="indefinite"
-          ></animate>
-          <animateTransform
+          attributeName="d"
+          values="M133,503 C175,557 476,601 438,476;M134,504 C113,440 397,352 439,477 ;"
+          begin="indefinite"
+          id="animate1"
+          dur="1s"
+          fill="freeze"
+          repeatCount="indefinite"
+        ></animate>
+        <animateTransform
           attributeName="transform"
           attributeType="XML"
           id="animate2"
@@ -210,28 +231,59 @@
           to="360 260 370"
           dur="1s"
           fill="freeze"
-          repeatCount="indefinite" />
-        </path>
-        <path
-          stroke="#000000"
-          visibility="hidden"
-          stroke-width="3px"
-          id="path2"
-          d="M134,504 C113,440 397,352 439,477 "
-          fill="none"
-          transform=""
-        ></path>
-      </svg>
+          repeatCount="indefinite"
+        />
+      </path>
+      <path
+        stroke="#000000"
+        visibility="hidden"
+        stroke-width="3px"
+        id="path2"
+        d="M134,504 C113,440 397,352 439,477 "
+        fill="none"
+        transform=""
+      ></path>
+    </svg>
     <!-- </div> -->
     <div class="controls">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        version="1.1"
+        viewBox="0 0 768 150"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMin meet"
+        id="slider_svg"
+      >
+        <rect
+          x="0px"
+          height="150px"
+          y="0px"
+          id="background_rect"
+          width="768px"
+          fill="#90eeff"
+        ></rect>
+        <rect x="0" width="200" height="150" rx="15">
+          <animateTransform
+            attributeName="transform"
+            begin="0s"
+            type="translate"
+            from="0 0"
+            to="568 0"
+            dur="1s"
+            fill="freeze"
+            repeatCount="indefinite"
+          />
+        </rect>
+      </svg>
       <input
         id="slider"
         name="slider"
         class="slider"
         type="range"
         min="0"
-        max="0.999"
-        step="0.001"
+        max="0.9999"
+        step="0.0001"
       />
     </div>
   </body>
