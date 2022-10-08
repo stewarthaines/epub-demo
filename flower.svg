@@ -32,7 +32,7 @@
      inkscape:window-x="0"
      inkscape:window-y="23"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer1"
      height="768px" />
   <defs
      id="defs2">
@@ -47,12 +47,23 @@
        vertical="false"
        hide_knot="false"
        bendpath-nodetypes="cc" />
+    <filter
+       style="color-interpolation-filters:sRGB"
+       id="filter6658"
+       inkscape:label="filter0"
+       x="-0.11480079"
+       y="-0.035673677"
+       width="1.2071442"
+       height="1.0646256">
+      <feGaussianBlur
+         stdDeviation="5"
+         id="feGaussianBlur6662" />
+    </filter>
   </defs>
   <g
      inkscape:label="thing1"
      inkscape:groupmode="layer"
-     id="layer1"
-     sodipodi:insensitive="true">
+     id="layer1">
     <path
        style="fill:none;stroke:#000000;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 303.94691,543.10784 c 0,0 -59.64741,-138.91388 -6.70565,-209.657 53.78798,-71.87386 129.45677,-43.34797 146.40658,-29.17907 18.29052,15.28964 40.23386,39.98613 35.76343,68.08449"
@@ -93,7 +104,7 @@
        inkscape:transform-center-y="-128.62718"
        inkscape:label="path3" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter6658)"
        d="m 303.94691,543.10784 c 0,0 -58.48066,-179.38042 -35.31258,-277.20257 12.58434,-53.13459 26.81104,-73.68194 52.14002,-111.07546 28.86355,-42.61166 62.18614,-69.196743 90.9835,-79.73194"
        id="path4"
        sodipodi:nodetypes="cssc"
