@@ -1,58 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>This is a Picklet</title>
     <!-- <link rel="stylesheet" type="text/css" href="style.css" /> -->
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <!-- <meta name="viewport" content="initial-scale=1.0" /> -->
-    <!-- <meta name="viewport" content="width=320, height=480, user-scalable=no, initial-scale=1.0, maximum-scale=1.0" /> -->
-    <!-- <meta name="viewport" content="width=320, height=492" /> -->
-    <meta name="viewport" content="width=320, height=508" />
+    <meta name="viewport" content="width=320, height=426" />
     <style>
-      @media screen and (min-width: 320px) {
-        #svg_document {
-          /* height: 480px; */
-        }
-      }
       html,
       body {
         touch-action: none;
         width: 100%;
         height: 100%;
-        /* width: 320px;
-        height: 480px; */
         padding: 0;
         margin: 0;
         -webkit-overflow-scrolling: none;
-        /* overflow: hidden; */
       }
-      #svg_document {
-        background-color: orange; /* #90ee90; */
-        /* height: 100%; */
-      }
-      @media (min-aspect-ratio: 744/640) {
-        body {
-          background-color: aquamarine;
-          /* height: 100%; */
-        }
-      }
-      /* @media (pointer: coarse) {
-        /* Styles for touch input */
-      /* body {
-          background-color: blue;
-        } */
-      /* } */
       .controls {
-        /* height: 48px; */
         position: fixed;
         width: 100%;
         bottom: -6px;
-        /* bottom: 20px; */
-        /* bottom: -48px; */
       }
       .controls svg {
         position: absolute;
-        /* bottom: 0; */
       }
       input[type="range"] {
         margin: 0;
@@ -60,31 +29,23 @@
         -webkit-appearance: none; /* for MacOS Books 1.5 */
         appearance: none;
         pointer-events: none;
-        /* direction: rtl; */
-        width: 100%;
-        height: 20vw;
-        /* background: rgba(255, 255, 255, 0.6); */
-        /* border-radius: 5px; */
-        /* opacity: 0.5; */
+        /* direction: rtl; */ /* epub 3 does not allow this per page */
+        width: 94vw;
+        height: 20vh;
+        padding: 0 3vw;
       }
       input[type="range"]::-webkit-slider-runnable-track {
         -webkit-appearance: initial;
         pointer-events: none;
-        /* opacity: 0.5; */
-        /* touch-action: initial; */
-        /* touch-action: manipulation; */
+        background-color: blue;
       }
       input[type="range"]::-webkit-slider-thumb {
-        /* pointer-events: auto; */
         border: none;
-        pointer-events: fill;
-        /* touch-action: none; */
+        pointer-events: all;
         -webkit-appearance: none; /* for MacOS Books 1.5 */
-        /* appearance: none; */
         width: 30vw;
-        height: 20vw;
+        height: 20vh;
         border-radius: 0;
-        /* cursor: pointer; */
         background-color: red;
       }
       #output {
@@ -98,18 +59,11 @@
       <![CDATA[
       var slider;
       var svg;
-      var slider_svg;
       var body;
       var output;
-      var animate1;
-      var animate2;
       var dragging = false;
       window.addEventListener("DOMContentLoaded", reset, false);
-      function ignore(evt) {
-        return false;
-      }
       function setBegin(value) {
-        console.log("setBegin(" + value + ")");
         ["animate", "animateTransform"].forEach(function(tag) {
           console.log(tag);
           var c = document.getElementsByTagName(tag);
@@ -117,8 +71,6 @@
             for (i = 0; i < c.length; i++) {
               var el = c[i];
               el.setAttribute("begin", value);
-              // el.setAttribute("repeatCount", value == "indefinite" ? "1" : "indefinte");
-              console.log("setting begin on " + el);
             }
         })
         var s = document.getElementsByTagName("svg");
@@ -128,105 +80,52 @@
         }
       }
       function setCurrentTime(evt) {
-        // output.innerHTML = evt.target.value;
-        // output.innerHTML = evt.target.value;
-        // output.innerHTML = evt.type;
         if(!dragging) {
           setBegin("0s");
         }
         output.innerHTML = evt.target.value;
         svg.setCurrentTime(evt.target.value);
-        slider_svg.setCurrentTime(evt.target.value);
         dragging = true;
       }
       function reset(evt) {
         body = document.getElementsByTagName("body")[0];
         var innerwidth = window.innerWidth;
         var innerHeight = window.innerHeight;
-        // document.querySelector('meta[name="viewport"]').setAttribute('content', `width=${innerWidth}, height=${innerHeight}, initial-scale=1`);
 
         output = document.getElementById("output");
-        output.innerHTML = `${innerWidth} x  ${innerHeight}`;
-        // output.innerHTML = window.ontouchstart;
-        // output.innerHTML = window.visualViewport.scale;
 
-        if (window.visualViewport) {
-          window.visualViewport.addEventListener("resize", function (event) {
-            event.preventDefault();
-            // output.innerHTML = window.visualViewport.scale;
-          });
-        }
-
-        // document.body.style.cssText = "background-color: yellow !important";
-
-        console.log("reset()");
         // NOTE: hardcoded svg element id... svg_document
         svg = document.getElementById("svg_document");
-        // svg.pauseAnimations();
 
-        slider_svg = document.getElementById("slider_svg");
-        // slider_svg.pauseAnimations();
-
-        // setBegin("0s");
-        // animate1 = document.getElementById("animate1");
-        // animate1.setAttribute("begin", "0s");
-        // animate2 = document.getElementById("animate2");
-        // animate2.setAttribute("begin", "0s");
-
-        // var focus_dummy = document.getElementById("focus_dummy");
-        window.onfocus = function(evt) {
-          // evt.preventDefault();
-          // console.log(evt);
-          // svg.pauseAnimations();
-          // slider_svg.pauseAnimations();
-          setBegin("indefinite");
-          slider.value = 0.9999;
-          slider.dispatchEvent(new window.Event("input", { bubbles: true }));
-          console.log("body focus()");
-          // return false;
-        };
-        // focus_dummy.focus();
-
+        // visibilitychange is the event fired when switching away from this page
+        document.onvisibilitychange = release;
         slider = document.getElementById("slider");
-        // var touch_offset_x;
-        slider.ontouchstart = function (evt) {
-          // repeat setting begin here because iPhone iBooks app will
-          // start animations playing on Resume from menu functions
-          // animate1.setAttribute("begin", "0s");
-          setBegin("0s");
-          setCurrentTime(evt);
-          // svg.pauseAnimations();
-          // slider_svg.pauseAnimations();
-          // touch_offset_x = evt.touches[0].clientX - evt.target.clientX;
-          // output.innerHTML = slider.getBoundingClientRect().left;
-          // animate1.setAttribute("begin", "0s");
-          // animate2.setAttribute("begin", "0s");
-        };
+
+        // for touch based Books range input which doesn't work with touch events,
+        // fake the range input events
+        slider.ontouchstart = setCurrentTime;
         slider.ontouchmove = function (evt) {
-          /* for stupid touch based Books range input, fake the range input events */
-          output.innerHTML = "ontouchmove " + evt.touches[0].clientX;
-          slider.value =  evt.touches[0].clientX / slider.clientWidth;
+          slider.value =  (evt.touches[0].clientX - 40) / (220); // slider.clientWidth;
           evt.preventDefault();
           setCurrentTime(evt);
+          output.innerHTML = evt.touches[0].clientX;
         };
-        slider.ontouchend = function (evt) {
-          // animate1.setAttribute("begin", "indefinite");
-          // animate2.setAttribute("begin", "indefinite");
-          // focus_dummy.focus();
+        // for normal mouse-based range input events
+        slider.oninput = setCurrentTime;
+
+        function release(evt) {
           setBegin("indefinite");
           slider.value = 0.9999;
           slider.dispatchEvent(new window.Event("input", { bubbles: true }));
           dragging = false;
-        }
-        slider.oninput =
-          setCurrentTime; /* for normal mouse-based range input */
-        // for desktop browser and iBooks on macos
-        slider.onchange = function() {
-          setBegin("indefinite");
-          slider.value = 0.9999;
-          slider.dispatchEvent(new window.Event("input", { bubbles: true }));
-          dragging = false;
-        }
+        };
+
+        // explicit touch drag and mouse-based reset slider
+        slider.ontouchend = slider.onchange = release;
+
+        // mouse-based drag end reset slider
+        // slider.onchange = release;
+
           // set initial value to max (setting value=1 would wrap the animation)
         slider.value = 0.9999;
 
@@ -239,7 +138,6 @@
 
   <body>
     <div id="output"></div>
-    <!-- <div class="content"> -->
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -260,10 +158,14 @@
         <filter id="noiseFilter">
           <feTurbulence
             type="fractalNoise"
-            baseFrequency="6.29"
-            numOctaves="6"
+            baseFrequency="0.05"
+            numOctaves="3"
             stitchTiles="stitch"
+            result="noise"
           />
+          <feDiffuseLighting in='noise' lighting-color='white' surfaceScale='2'>
+            <feDistantLight azimuth='45' elevation='60' />
+          </feDiffuseLighting>
         </filter>
         <filter id="blurMe">
           <feGaussianBlur stdDeviation="5">
@@ -454,49 +356,29 @@
           />
         </path>
       </g>
-    </svg>
-    <!-- </div> -->
-    <div class="controls">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        version="1.1"
-        viewBox="0 0 768 150"
-        width="100%"
-        height="100%"
-        preserveAspectRatio="xMidYMin meet"
-        id="slider_svg"
-      >
-        <rect
-          x="0px"
-          height="150px"
-          y="0px"
-          id="background_rect"
-          width="768px"
-          fill="#90eeff"
-        ></rect>
-        <rect x="0" width="200" height="150" rx="15">
-          <animateTransform
-            attributeName="transform"
-            begin="indefinite"
-            type="translate"
-            from="0 0"
-            to="568 0"
-            dur="1s"
-            fill="freeze"
-            repeatCount="indefinite"
-          />
-        </rect>
-      </svg>
-      <input
-        id="slider"
-        name="slider"
-        class="slider"
-        type="range"
-        min="0"
-        max="0.9999"
-        step="0.0001"
+    <rect x="0" width="200" height="150" rx="15">
+      <animateTransform
+        attributeName="transform"
+        begin="indefinite"
+        type="translate"
+        from="0 876"
+        to="568 876"
+        dur="1s"
+        fill="freeze"
+        repeatCount="indefinite"
       />
-    </div>
-    <!-- <input id="focus_dummy"/> -->
-  </body>
+    </rect>
+  </svg>
+  <div class="controls">
+    <input
+      id="slider"
+      name="slider"
+      class="slider"
+      type="range"
+      min="0"
+      max="0.9999"
+      step="0.0001"
+    />
+  </div>
+</body>
 </html>
