@@ -77,69 +77,11 @@
         left: 0;
       }
     </style>
-    <!-- <script type="text/javascript" src="main.js"> -->
-    <script type="text/javascript">
-      var slider;
-      var svg;
-      var body;
-      var output;
-      var animate1;
-      window.addEventListener(
-        "DOMContentLoaded",
-        reset,
-        false
-      );
-      function ignore(evt) {
-        return false;
-      }
-      function setCurrentTime(evt) {
-        // output.innerHTML = evt.target.value;
-        // output.innerHTML = evt.target.value;
-        // output.innerHTML = evt.type;
-        output.innerHTML = evt.target.value;
-        svg.setCurrentTime(evt.target.value);
-      }
-      function reset(evt) {
-        body = document.getElementsByTagName("body")[0];
-
-        output = document.getElementById("output");
-
-        output.innerHTML = window.ontouchstart;
-
-        // document.body.style.cssText = "background-color: yellow !important";
-
-        console.log("reset()");
-        // NOTE: hardcoded svg element id... svg_document
-        svg = document.getElementById("svg_document");
-        svg.pauseAnimations();
-
-        // animate1 = document.getElementById("animate1");
-        // animate1.setAttribute("begin", "0s");
-
-        slider = document.getElementById("slider");
-        slider.ontouchstart = function (evt) {
-          // repeat setting begin here because iPhone iBooks app will
-          // start animations playing on Resume from menu functions
-          animate1.setAttribute("begin", "0s");
-          setCurrentTime(evt);
-          svg.pauseAnimations();
-        };
-        slider.ontouchmove = function (evt) {
-          /* for stupid touch based Books range input, fake the range input events */
-          output.innerHTML = "ontouchmove " + evt.touches[0].clientX;
-          slider.value = evt.touches[0].clientX / slider.clientWidth;
-          evt.preventDefault();
-          setCurrentTime(evt);
-        };
-        slider.oninput =
-          setCurrentTime; /* for normal mouse-based range input */
-      }
-    </script>
+    <script type="text/javascript" src="main.js"/>
   </head>
 
   <body>
     <div id="output"></div>
-    <!-- <div class="content"> -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -149,7 +91,7 @@
         xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
         xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
         version="1.1"
-        viewBox="0 0 640 480"
+        viewBox="0 0 768 1024"
         width="100%"
         height="100%"
         preserveAspectRatio="xMidYMin meet"
@@ -160,15 +102,42 @@
         <g id="main_group">
           <rect
             x="0px"
-            height="480px"
+            height="1024px"
             y="0px"
-            id="background_rect"
-            width="640px"
+            width="384px"
             fill="#90ee00"
-          ></rect>
+          >
+          <animateTransform
+          attributeName="transform"
+          begin="indefinite"
+          type="translate"
+          from="768 0"
+          to="384 0"
+          dur="1s"
+          fill="freeze"
+          repeatCount="indefinite"
+        />
+        </rect>
+          <rect
+            x="0px"
+            height="1024px"
+            y="0px"
+            width="385px"
+            fill="#90ee00"
+          >
+          <animateTransform
+          attributeName="transform"
+          begin="indefinite"
+          type="translate"
+          from="-384 0"
+          to="0 0"
+          dur="1s"
+          fill="freeze"
+          repeatCount="indefinite"
+        />
+        </rect>
         </g>
       </svg>
-    <!-- </div> -->
     <div class="controls">
       <input
         id="slider"

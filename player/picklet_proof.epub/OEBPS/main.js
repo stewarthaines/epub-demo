@@ -1,94 +1,75 @@
-// window.onload = reset
-// window.onmousedown = function (evt) {
-//   // output.innerHTML = "onmousedown";
-//   // evt.preventDefault();
-//   dump(evt);
-// };
-// window.onpointerover = function (evt) {
-//   // evt.preventDefault();
-//   dump(evt);
-// };
-// window.onpointerdown = function (evt) {
-//   // evt.preventDefault();
-//   dump(evt);
-// };
-// window.ongotpointercapture = function (evt) {
-//   // evt.preventDefault();
-//   dump(evt);
-// };
-// document.onpointermove = function (evt) {
-//   // evt.preventDefault();
-//   dump(evt);
-// };
-function dump(evt) {
-  // evt.stopImmediatePropagation();
-  if (evt.target == slider) {
-    evt.preventDefault();
-    // TODO: do something to update the value based on the event coordinates
-    slider.value = evt.clientX / evt.target.clientWidth;
-    svg.setCurrentTime(slider.value);
-  }
-  var p = document.createElement("p");
-  // output.innerHTML = "gotpointermove";
-  p.innerHTML = evt.type + " " + evt.clientX;
-  // output.insertBefore(p, output.firstChild);
-  return true;
-}
-var output;
-var svg;
 var slider;
+var svg;
 var body;
-function setCurrentTime(evt) {
-  // output.innerHTML = evt.target.value;
-  svg.setCurrentTime(evt.target.value);
+var output;
+var dragging = false;
+window.addEventListener("DOMContentLoaded", reset, false);
+function setBegin(value) {
+  ["animate", "animateTransform"].forEach(function (tag) {
+    console.log(tag);
+    var c = document.getElementsByTagName(tag);
+    var i;
+    for (i = 0; i < c.length; i++) {
+      var el = c[i];
+      el.setAttribute("begin", value);
+    }
+  })
+  var s = document.getElementsByTagName("svg");
+  for (var i = 0; i < s.length; i++) {
+    var el = s[i];
+    el.pauseAnimations();
+  }
 }
-
+function setCurrentTime(evt) {
+  if (!dragging) {
+    setBegin("0s");
+  }
+  output.innerHTML = evt.target.value;
+  svg.setCurrentTime(evt.target.value);
+  dragging = true;
+}
 function reset(evt) {
   body = document.getElementsByTagName("body")[0];
-  // body.onmousedown = dump;
+  var innerwidth = window.innerWidth;
+  var innerHeight = window.innerHeight;
 
   output = document.getElementById("output");
-  // document.body.style.backgroundColor = "yellow";
-  document.body.style.cssText = "background-color: yellow !important";
 
-  console.log("reset()");
   // NOTE: hardcoded svg element id... svg_document
   svg = document.getElementById("svg_document");
-  console.log(svg)
-  // output.innerHTML = slider.id;
-  svg.pauseAnimations();
 
-  // if (
-  //   navigator.epubReadingSystem &&
-  //   navigator.epubReadingSystem.hasFeature("touch-events")
-  // ) {
-  //   output.innerHTML = "has touch-events";
-  // }
-
-  // var output = document.getElementById("output");
-  // output.innerHTML = "started"
-  // output.innerHTML = navigator.epubReadingSystem
-
-  // document.body.style.backgroundColor = colors[color]
-  // color = color == 1 ? 0 : 1
-
+  // visibilitychange is the event fired when switching away from this page
+  document.onvisibilitychange = release;
   slider = document.getElementById("slider");
-  // body.ontouchstart = dump;
-  // slider.onmousedown = dump;
-  // body.ondragstart = dump;
-  // slider.ontouchstart = dump;
-  // slider.oninput = function (evt) {
-  //   el.setCurrentTime(evt.target.value);
-  //   output.innerHTML = "" + evt.target.value;
-  // };
-  // slider.value = 0.999;
-  // window.onmousemove = function (evt) {
-  //   // evt.preventDefault()
-  //   output.innerHTML = "onmousemove";
-  // };
-  // slider.ontouchmove = function (evt) {
-  //   // update
-  //   console.log(evt.target.value)
-  //   el.setCurrentTime(evt.target.value)
-  // }
+
+  // for touch based Books range input which doesn't work with touch events,
+  // fake the range input events
+  slider.ontouchstart = setCurrentTime;
+  slider.ontouchmove = function (evt) {
+    slider.value = (evt.touches[0].clientX - 40) / (220); // slider.clientWidth;
+    evt.preventDefault();
+    setCurrentTime(evt);
+    output.innerHTML = evt.touches[0].clientX;
+  };
+  // for normal mouse-based range input events
+  slider.oninput = setCurrentTime;
+
+  function release(evt) {
+    setBegin("indefinite");
+    slider.value = 0.9999;
+    slider.dispatchEvent(new window.Event("input", { bubbles: true }));
+    dragging = false;
+  };
+
+  // explicit touch drag and mouse-based reset slider
+  slider.ontouchend = slider.onchange = release;
+
+  // mouse-based drag end reset slider
+  // slider.onchange = release;
+
+  // set initial value to max (setting value=1 would wrap the animation)
+  slider.value = 0.9999;
+
+  // set initial state of svg by faking a touch input event on the slider
+  slider.dispatchEvent(new window.Event("input", { bubbles: true }));
 }
