@@ -55,6 +55,10 @@ function reset(evt) {
   slider.oninput = setCurrentTime;
 
   function release(evt) {
+    if(document.visibilityState) {
+      console.log(document.visibilityState);
+      output.innerHTML = document.visibilityState;
+    }
     setBegin("indefinite");
     slider.value = 0.9999;
     slider.dispatchEvent(new window.Event("input", { bubbles: true }));
