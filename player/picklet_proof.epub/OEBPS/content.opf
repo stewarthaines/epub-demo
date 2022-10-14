@@ -9,7 +9,7 @@
     <dc:date>2022-09-17</dc:date>
     <dc:rights>&#169;  Stewart Haines</dc:rights>
     <meta property="role" refines="#creator" scheme="marc:relators">aut</meta>
-    <meta property="dcterms:modified">2022-09-29T18:17:00Z</meta>
+    <meta property="dcterms:modified">2022-10-14T13:04:03Z</meta>
     <meta property="rendition:layout">pre-paginated</meta>
     <meta property="rendition:spread">none</meta>
     <meta property="rendition:orientation">portrait</meta>
@@ -20,7 +20,7 @@
     <item id="nav.xhtml" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
     <item id="cover.xhtml" href="cover.xhtml" media-type="application/xhtml+xml" properties="svg"/>
     <item id="page1" href="page1.xhtml" media-type="application/xhtml+xml" properties="scripted svg"/>
-    <item id="page2" href="page2.xhtml" media-type="application/xhtml+xml" properties="scripted"/>
+    <item id="page2" href="page2.xhtml" media-type="application/xhtml+xml" properties="scripted svg"/>
     <item id="page3" href="page3.xhtml" media-type="application/xhtml+xml" properties="scripted"/>
     <item id="main.js" href="main.js" media-type="application/javascript"/>
     <item id="style.css" href="style.css" media-type="text/css"/>

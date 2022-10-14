@@ -9,8 +9,8 @@
       html,
       body {
         touch-action: none;
-        width: 100%;
-        height: 100%;
+        width: 320px;
+        height: 426px;
         padding: 0;
         margin: 0;
         -webkit-overflow-scrolling: none;
@@ -66,17 +66,16 @@
     <div id="output"></div>
     <svg
       xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
       version="1.1"
       viewBox="0 0 768 1024"
       width="100%"
       height="100%"
       preserveAspectRatio="xMidYMin meet"
+      id="ambient-animations"
     >
-    <circle
-      r="250"
-      cx="250" cy="250"
-      fill="yellow">
       <animateTransform
+        xlink:href="#yellow-circle"
         class="ambient"
         attributeName="transform"
         begin="0s"
@@ -87,7 +86,17 @@
         fill="freeze"
         repeatCount="indefinite"
       />
-    </circle>
+      <animateTransform
+        xlink:href="#path2445"
+        class="ambient"
+        attributeName="transform"
+        begin="0s"
+        type="scale"
+        values="1 1; 2 2; 1 1;"
+        dur="5s"
+        fill=""
+        repeatCount="indefinite"
+      />
     </svg>
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -106,48 +115,38 @@
     >
       <title id="svg_document_title">Untitled.svg</title>
       <defs id="svg_document_defs">
-        <filter id="crayon">
+        <filter id="crayon" filterUnits="userSpaceOnUse" x="0" y="0" width="768" height="1024">
           <feTurbulence
             id="turbulence"
             type="fractalNoise"
             baseFrequency="0.98"
             numOctaves="3"
-            result="noise">
-          </feTurbulence>
+            result="noise"
+          ></feTurbulence>
           <feDisplacementMap
-              xChannelSelector="R"
-              yChannelSelector="G"
-              scale="20"
-              in="SourceGraphic"
-              result="newSource">
-          </feDisplacementMap>
-          <feGaussianBlur stdDeviation="0.001"/>
+            xChannelSelector="R"
+            yChannelSelector="G"
+            scale="20"
+            in="SourceGraphic"
+            result="newSource"
+          ></feDisplacementMap>
+          <feGaussianBlur stdDeviation="0.001" />
         </filter>
-        <filter
-          color-interpolation-filters="sRGB"
-          id="anaglyph"
-          primitiveUnits="objectBoundingBox"
-        >
-          <feOffset result="l1" in="SourceGraphic" dy="0" dx="-.01">
-            <animate
-              attributeName="dx"
-              values="0; -0.01"
-              begin="indefinite"
-              dur="1s"
-              fill="freeze"
-              repeatCount="indefinite"
-            />
-          </feOffset>
-          <feOffset result="r1" in="SourceGraphic" dy="0" dx=".01">
-            <animate
-              attributeName="dx"
-              values="0; 0.01"
-              begin="indefinite"
-              dur="1s"
-              fill="freeze"
-              repeatCount="indefinite"
-            />
-          </feOffset>
+        <filter color-interpolation-filters="sRGB" id="anaglyph">
+          <feOffset
+            id="anaglyph-offset-l1"
+            result="l1"
+            in="SourceGraphic"
+            dy="0"
+            dx="-5"
+          ></feOffset>
+          <feOffset
+            id="anaglyph-offset-r1"
+            result="r1"
+            in="SourceGraphic"
+            dy="0"
+            dx="5"
+          ></feOffset>
           <feColorMatrix
             result="r2"
             values="1 0 0 0 0 0 1 0 0 1 0 0 1 0 1 0 0 0 1 0 "
@@ -170,25 +169,21 @@
             type="fractalNoise"
             baseFrequency="0.98"
             numOctaves="3"
-            result="noise">
-          </feTurbulence>
+            result="noise"
+          ></feTurbulence>
           <feDiffuseLighting in="noise" lighting-color="white" surfaceScale="2">
             <feDistantLight azimuth="45" elevation="60" />
           </feDiffuseLighting>
         </filter>
         <filter id="blurMe" primitiveUnits="objectBoundingBox">
-          <feGaussianBlur stdDeviation=".005">
-            <animate
-              attributeName="stdDeviation"
-              from=".005"
-              to=".01"
-              dur="1s"
-              fill="freeze"
-            />
-          </feGaussianBlur>
+          <feGaussianBlur
+            stdDeviation=".005"
+            id="blur-me-std-deviation"
+          ></feGaussianBlur>
         </filter>
       </defs>
       <g id="main_group">
+        <circle id="yellow-circle" r="250" cx="250" cy="250" fill="yellow" />
         <rect
           x="0px"
           height="1024px"
@@ -197,7 +192,7 @@
           width="768px"
           fill="#90ee90"
           filter="url(#noiseFilter)"
-          style="mix-blend-mode: multiply;"
+          style="mix-blend-mode: multiply"
         ></rect>
       </g>
       <g id="thing1">
@@ -214,32 +209,9 @@
             filter: url(#blurMe);
           "
           d="m 303.94691,543.10784 c 0,0 -64.31821,-145.49136 -17.4372,-220.38855 30.2641,-48.34998 74.08442,-71.30517 116.35826,-74.25156 29.01256,-2.02211 83.16004,9.9378 98.00639,31.59724"
-          id="path862"
-        >
-          <animate
-            attributeName="d"
-            values="
-          m 303.94691,543.10784 c 0,0 -58.48066,-179.38042 -35.31258,-277.20257 12.58434,-53.13459 26.81104,-73.68194 52.14002,-111.07546 28.86355,-42.61166 62.18614,-69.196743 90.9835,-79.73194;
-          m 303.94691,543.10784 c 0,0 -68.05011,-144.46859 -23.50788,-256.81263 14.32405,-36.12799 34.32312,-77.97456 75.74942,-112.14862 39.70155,-32.75125 126.57542,-42.36788 141.42177,-20.70844;
-          m 303.94691,543.10784 c 0,0 -64.31821,-145.49136 -17.4372,-220.38855 30.2641,-48.34998 74.08442,-71.30517 116.35826,-74.25156 29.01256,-2.02211 83.16004,9.9378 98.00639,31.59724;
-          m 303.94691,543.10784 c 0,0 -59.64741,-138.91388 -6.70565,-209.657 53.78798,-71.87386 129.45677,-43.34797 146.40658,-29.17907 18.29052,15.28964 40.23386,39.98613 35.76343,68.08449;"
-            begin="indefinite"
-            id="animate1"
-            dur="1s"
-            fill="freeze"
-            repeatCount="indefinite"
-          ></animate>
-          <animateTransform
-            attributeName="transform"
-            begin="indefinite"
-            type="rotate"
-            from="0 304 540"
-            to="10 304 540"
-            dur="1s"
-            fill="freeze"
-            repeatCount="indefinite"
-          />
-        </path>
+          id="line1"
+        ></path>
+        <g id="dot" transform="translate(502, 282)">
         <circle
           style="
             fill: #000000;
@@ -249,84 +221,42 @@
             stroke-dasharray: none;
           "
           id="path2445"
-          cx="502.93515"
-          cy="282.0549"
-          r="10.796056"
-        >
-          <animate
-            attributeName="cx"
-            begin="indefinite"
-            values="410.64386; 498.64255; 502.93515; 479.41125;"
-            dur="1s"
-            fill="freeze"
-            repeatCount="indefinite"
-          />
-          <animate
-            attributeName="cy"
-            begin="indefinite"
-            values="77.082375; 153.27635; 282.0549; 372.35626;"
-            dur="1s"
-            fill="freeze"
-            repeatCount="indefinite"
-          />
-        </circle>
-      </g>
-      <g
-        stroke="#000000"
-        filter="url(#crayon)"
-      >
-        <g id="thing2">
-        <path
-          visibility="hidden"
-          stroke-width="3px"
-          id="path2"
-          d="M134,504 C113,440 397,352 439,477 "
-          fill="none"
-          transform=""
-        ></path>
-        <path
-          style="
-            fill: none;
-            stroke-width: 8.92022;
-            stroke-linecap: round;
-            stroke-linejoin: miter;
-            stroke-miterlimit: 4;
-            stroke-dasharray: none;
-            stroke-opacity: 1;
-          "
-          d="
-      m 399.21863,569.48561 c 0,0 -54.43607,-121.11591 -6.11978,-182.79526 49.08857,-62.66522 118.14624,-37.79413 133.61516,-25.44058 16.69249,13.33069 36.71866,34.86301 32.63881,59.36134"
-        >
-          <animate
-            attributeName="d"
-            values="
-          m 399.21863,569.48561 c 0,0 -53.37125,-156.39779 -32.22735,-241.68674 11.48486,-46.32686 24.46858,-64.24164 47.58459,-96.84422 26.34177,-37.15215 56.75299,-60.33109 83.03435,-69.5165;
-          m 399.21863,569.48561 c 0,0 -62.10463,-125.95894 -21.45402,-223.90921 13.07257,-31.49919 31.32434,-67.98428 69.13126,-97.77988 36.23286,-28.55508 115.51663,-36.93961 129.06587,-18.05522;
-          m 399.21863,569.48561 c 0,0 -58.69878,-126.85067 -15.91373,-192.15186 27.61995,-42.15527 67.61173,-62.16939 106.19214,-64.73828 26.47776,-1.76304 75.89442,8.66454 89.44366,27.54893;
-          m 399.21863,569.48561 c 0,0 -54.43607,-121.11591 -6.11978,-182.79526 49.08857,-62.66522 118.14624,-37.79413 133.61516,-25.44058 16.69249,13.33069 36.71866,34.86301 32.63881,59.36134;
-          m 399.21863,569.48561 c 0,0 -54.43607,-121.11591 -6.11978,-182.79526 49.08857,-62.66522 118.14624,-37.79413 133.61516,-25.44058 16.69249,13.33069 36.71866,34.86301 32.63881,59.36134"
-            keyTimes="0; 0.1; 0.2; 0.3; 1"
-            begin="indefinite"
-            dur="1s"
-            fill="freeze"
-            repeatCount="indefinite"
-          ></animate>
-          <animateTransform
-            attributeName="transform"
-            begin="indefinite"
-            type="rotate"
-            from="0 399 566"
-            to="15 399 566"
-            dur="1s"
-            fill="freeze"
-            repeatCount="indefinite"
-          />
-        </path>
+          cx="0"
+          cy="0"
+          r="10"
+        ></circle>
         </g>
       </g>
-      <use xlink:href="#thing2" style="stroke: #333;"></use>
+      <g stroke="#000000" filter="url(#crayon)">
+        <g id="thing2">
+          <path
+            visibility="hidden"
+            stroke-width="3px"
+            id="path2"
+            d="M134,504 C113,440 397,352 439,477 "
+            fill="none"
+            transform=""
+          ></path>
+          <path
+            id="line2"
+            style="
+              fill: none;
+              stroke-width: 8.92022;
+              stroke-linecap: round;
+              stroke-linejoin: miter;
+              stroke-miterlimit: 4;
+              stroke-dasharray: none;
+              stroke-opacity: 1;
+            "
+            d="
+      m 399.21863,569.48561 c 0,0 -54.43607,-121.11591 -6.11978,-182.79526 49.08857,-62.66522 118.14624,-37.79413 133.61516,-25.44058 16.69249,13.33069 36.71866,34.86301 32.63881,59.36134"
+          ></path>
+        </g>
+      </g>
+      <use xlink:href="#thing2" style="stroke: #333"></use>
       <g filter="url(#anaglyph)" transform="translate(20 65.5) scale(0.9 0.9)">
         <path
+          id="line3"
           style="
             fill: none;
             stroke: #000000;
@@ -339,46 +269,145 @@
           "
           d="
         m 524.78044,578.34665 c 0,0 -48.94738,-144.34661 -29.55608,-223.06365 10.53291,-42.75716 22.44042,-59.29152 43.64037,-89.38192 24.15834,-34.2894 52.04882,-55.6823 76.15175,-64.15993"
-        >
-          <animate
-            attributeName="d"
-            values="
-          m 524.78044,578.34665 c 0,0 -48.94738,-144.34661 -29.55608,-223.06365 10.53291,-42.75716 22.44042,-59.29152 43.64037,-89.38192 24.15834,-34.2894 52.04882,-55.6823 76.15175,-64.15993;
-          m 524.78044,578.34665 c 0,0 -48.94738,-144.34661 -29.55608,-223.06365 10.53291,-42.75716 22.44042,-59.29152 43.64037,-89.38192 24.15834,-34.2894 52.04882,-55.6823 76.15175,-64.15993;
-          m 524.78044,578.34665 c 0,0 -56.95686,-116.25322 -19.67573,-206.65596 11.989,-29.07203 28.7279,-62.74578 63.40106,-90.24549 33.22956,-26.35477 105.94162,-34.09324 118.36777,-16.66398;
-          m 524.78044,578.34665 c 0,0 -53.83332,-117.07624 -14.59466,-177.34566 25.33057,-38.90701 62.00748,-57.37895 97.39001,-59.7499 24.28306,-1.62719 69.60363,7.9969 82.02979,25.42616;
-          m 524.78044,578.34665 c 0,0 -49.92395,-111.78337 -5.61252,-168.71003 45.01968,-57.83658 108.35325,-34.88192 122.53998,-23.48027 15.30887,12.3035 33.6751,32.17665 29.93342,54.78727;
-          m 524.78044,578.34665 c 0,0 -49.92395,-111.78337 -5.61252,-168.71003 45.01968,-57.83658 108.35325,-34.88192 122.53998,-23.48027 15.30887,12.3035 33.6751,32.17665 29.93342,54.78727"
-            keyTimes="0; 0.1; 0.4; 0.75; 0.9; 1"
-            begin="indefinite"
-            dur="1s"
-            fill="freeze"
-            repeatCount="indefinite"
-          ></animate>
-          <animateTransform
-            attributeName="transform"
-            begin="indefinite"
-            type="rotate"
-            from="0 525 581"
-            to="10 525 581"
-            dur="1s"
-            fill="freeze"
-            repeatCount="indefinite"
-          />
-        </path>
+        ></path>
       </g>
-      <rect x="0" width="200" height="150" rx="15">
-        <animateTransform
-          attributeName="transform"
-          begin="indefinite"
-          type="translate"
-          from="0 876"
-          to="568 876"
-          dur="1s"
-          fill="freeze"
-          repeatCount="indefinite"
-        />
-      </rect>
+      <rect id="thumb" x="0" width="200" height="150" rx="15"></rect>
+    </svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      version="1.1"
+      viewBox="0 0 768 1024"
+      width="100%"
+      height="100%"
+      preserveAspectRatio="xMidYMin meet"
+      id="slider-animations"
+    >
+    <animate
+    attributeName="d"
+    xlink:href="#line1"
+    values="
+m 303.94691,543.10784 c 0,0 -58.48066,-179.38042 -35.31258,-277.20257 12.58434,-53.13459 26.81104,-73.68194 52.14002,-111.07546 28.86355,-42.61166 62.18614,-69.196743 90.9835,-79.73194;
+m 303.94691,543.10784 c 0,0 -68.05011,-144.46859 -23.50788,-256.81263 14.32405,-36.12799 34.32312,-77.97456 75.74942,-112.14862 39.70155,-32.75125 126.57542,-42.36788 141.42177,-20.70844;
+m 303.94691,543.10784 c 0,0 -64.31821,-145.49136 -17.4372,-220.38855 30.2641,-48.34998 74.08442,-71.30517 116.35826,-74.25156 29.01256,-2.02211 83.16004,9.9378 98.00639,31.59724;
+m 303.94691,543.10784 c 0,0 -59.64741,-138.91388 -6.70565,-209.657 53.78798,-71.87386 129.45677,-43.34797 146.40658,-29.17907 18.29052,15.28964 40.23386,39.98613 35.76343,68.08449;"
+    begin="indefinite"
+    id="animate1"
+    dur="1s"
+    fill="freeze"
+    repeatCount="indefinite"
+  />
+  <animateTransform
+    attributeName="transform"
+    xlink:href="#line1"
+    begin="indefinite"
+    type="rotate"
+    from="0 304 540"
+    to="10 304 540"
+    dur="1s"
+    fill="freeze"
+    repeatCount="indefinite"
+  />
+  <animate
+        xlink:href="#blur-me-std-deviation"
+        attributeName="stdDeviation"
+        from=".005"
+        to=".02"
+        dur="1s"
+        fill="freeze"
+      />
+      <animate
+        xlink:href="#anaglyph-offset-l1"
+        attributeName="dx"
+        values="-5; 0"
+        begin="indefinite"
+        dur="1s"
+        fill="freeze"
+        repeatCount="indefinite"
+      />
+      <animate
+        xlink:href="#anaglyph-offset-r1"
+        attributeName="dx"
+        values="5; 0"
+        begin="indefinite"
+        dur="1s"
+        fill="freeze"
+        repeatCount="indefinite"
+      />
+      <animateTransform
+        xlink:href="#dot"
+        attributeName="transform"
+        type="translate"
+        begin="indefinite"
+        values="410.64386 77.082375; 498.64255 153.27635; 502.93515 282.0549; 479.41125 372.35626;"
+        dur="1s"
+        fill="freeze"
+        repeatCount="indefinite"
+      />
+      <animate
+        attributeName="d"
+        xlink:href="#line2"
+        values="
+m 399.21863,569.48561 c 0,0 -53.37125,-156.39779 -32.22735,-241.68674 11.48486,-46.32686 24.46858,-64.24164 47.58459,-96.84422 26.34177,-37.15215 56.75299,-60.33109 83.03435,-69.5165;
+m 399.21863,569.48561 c 0,0 -62.10463,-125.95894 -21.45402,-223.90921 13.07257,-31.49919 31.32434,-67.98428 69.13126,-97.77988 36.23286,-28.55508 115.51663,-36.93961 129.06587,-18.05522;
+m 399.21863,569.48561 c 0,0 -58.69878,-126.85067 -15.91373,-192.15186 27.61995,-42.15527 67.61173,-62.16939 106.19214,-64.73828 26.47776,-1.76304 75.89442,8.66454 89.44366,27.54893;
+m 399.21863,569.48561 c 0,0 -54.43607,-121.11591 -6.11978,-182.79526 49.08857,-62.66522 118.14624,-37.79413 133.61516,-25.44058 16.69249,13.33069 36.71866,34.86301 32.63881,59.36134;
+m 399.21863,569.48561 c 0,0 -54.43607,-121.11591 -6.11978,-182.79526 49.08857,-62.66522 118.14624,-37.79413 133.61516,-25.44058 16.69249,13.33069 36.71866,34.86301 32.63881,59.36134"
+        keyTimes="0; 0.1; 0.2; 0.3; 1"
+        begin="indefinite"
+        dur="1s"
+        fill="freeze"
+        repeatCount="indefinite"
+      />
+      <animateTransform
+        attributeName="transform"
+        xlink:href="#line2"
+        begin="indefinite"
+        type="rotate"
+        from="0 399 566"
+        to="15 399 566"
+        dur="1s"
+        fill="freeze"
+        repeatCount="indefinite"
+      />
+      <animate
+        attributeName="d"
+        xlink:href="#line3"
+        values="
+m 524.78044,578.34665 c 0,0 -48.94738,-144.34661 -29.55608,-223.06365 10.53291,-42.75716 22.44042,-59.29152 43.64037,-89.38192 24.15834,-34.2894 52.04882,-55.6823 76.15175,-64.15993;
+m 524.78044,578.34665 c 0,0 -48.94738,-144.34661 -29.55608,-223.06365 10.53291,-42.75716 22.44042,-59.29152 43.64037,-89.38192 24.15834,-34.2894 52.04882,-55.6823 76.15175,-64.15993;
+m 524.78044,578.34665 c 0,0 -56.95686,-116.25322 -19.67573,-206.65596 11.989,-29.07203 28.7279,-62.74578 63.40106,-90.24549 33.22956,-26.35477 105.94162,-34.09324 118.36777,-16.66398;
+m 524.78044,578.34665 c 0,0 -53.83332,-117.07624 -14.59466,-177.34566 25.33057,-38.90701 62.00748,-57.37895 97.39001,-59.7499 24.28306,-1.62719 69.60363,7.9969 82.02979,25.42616;
+m 524.78044,578.34665 c 0,0 -49.92395,-111.78337 -5.61252,-168.71003 45.01968,-57.83658 108.35325,-34.88192 122.53998,-23.48027 15.30887,12.3035 33.6751,32.17665 29.93342,54.78727;
+m 524.78044,578.34665 c 0,0 -49.92395,-111.78337 -5.61252,-168.71003 45.01968,-57.83658 108.35325,-34.88192 122.53998,-23.48027 15.30887,12.3035 33.6751,32.17665 29.93342,54.78727"
+        keyTimes="0; 0.1; 0.4; 0.75; 0.9; 1"
+        begin="indefinite"
+        dur="1s"
+        fill="freeze"
+        repeatCount="indefinite"
+      />
+      <animateTransform
+        attributeName="transform"
+        xlink:href="#line3"
+        begin="indefinite"
+        type="rotate"
+        from="0 525 581"
+        to="10 525 581"
+        dur="1s"
+        fill="freeze"
+        repeatCount="indefinite"
+      />
+      <animateTransform
+        attributeName="transform"
+        xlink:href="#thumb"
+        begin="indefinite"
+        type="translate"
+        from="0 876"
+        to="568 876"
+        dur="1s"
+        fill="freeze"
+        repeatCount="indefinite"
+      />
     </svg>
     <div class="controls">
       <input

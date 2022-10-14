@@ -38,7 +38,7 @@ function reset(evt) {
   output = document.getElementById("output");
 
   // NOTE: hardcoded svg element id... svg_document
-  svg = document.getElementById("svg_document");
+  svg = document.getElementById("slider-animations");
 
   // visibilitychange is the event fired when switching away from this page
   document.onvisibilitychange = release;
