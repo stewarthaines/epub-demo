@@ -7,18 +7,20 @@ window.addEventListener("DOMContentLoaded", reset, false);
 function setBegin(value) {
   ["animate", "animateTransform"].forEach(function (tag) {
     console.log(tag);
-    var c = document.getElementsByTagName(tag);
+    var c = svg.getElementsByTagName(tag);
     var i;
     for (i = 0; i < c.length; i++) {
       var el = c[i];
+      // if (el.getAttribute("class") == "ambient") continue;
       el.setAttribute("begin", value);
     }
   })
-  var s = document.getElementsByTagName("svg");
-  for (var i = 0; i < s.length; i++) {
-    var el = s[i];
-    el.pauseAnimations();
-  }
+  // var s = document.getElementsByTagName("svg");
+  // for (var i = 0; i < s.length; i++) {
+  //   var el = s[i];
+  //   el.pauseAnimations();
+  // }
+  svg.pauseAnimations();
 }
 function setCurrentTime(evt) {
   if (!dragging) {

@@ -15,6 +15,11 @@
         margin: 0;
         -webkit-overflow-scrolling: none;
       }
+      svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
       .controls {
         position: fixed;
         width: 100%;
@@ -61,6 +66,31 @@
     <div id="output"></div>
     <svg
       xmlns="http://www.w3.org/2000/svg"
+      version="1.1"
+      viewBox="0 0 768 1024"
+      width="100%"
+      height="100%"
+      preserveAspectRatio="xMidYMin meet"
+    >
+    <circle
+      r="250"
+      cx="250" cy="250"
+      fill="yellow">
+      <animateTransform
+        class="ambient"
+        attributeName="transform"
+        begin="0s"
+        type="rotate"
+        from="0 400 300"
+        to="360 300 300"
+        dur="9s"
+        fill="freeze"
+        repeatCount="indefinite"
+      />
+    </circle>
+    </svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
       xmlns:dc="http://purl.org/dc/elements/1.1/"
       xmlns:cc="http://web.resource.org/cc/"
@@ -76,27 +106,85 @@
     >
       <title id="svg_document_title">Untitled.svg</title>
       <defs id="svg_document_defs">
+        <filter id="crayon">
+          <feTurbulence
+            id="turbulence"
+            type="fractalNoise"
+            baseFrequency="0.98"
+            numOctaves="3"
+            result="noise">
+          </feTurbulence>
+          <feDisplacementMap
+              xChannelSelector="R"
+              yChannelSelector="G"
+              scale="20"
+              in="SourceGraphic"
+              result="newSource">
+          </feDisplacementMap>
+          <feGaussianBlur stdDeviation="0.001"/>
+        </filter>
+        <filter
+          color-interpolation-filters="sRGB"
+          id="anaglyph"
+          primitiveUnits="objectBoundingBox"
+        >
+          <feOffset result="l1" in="SourceGraphic" dy="0" dx="-.01">
+            <animate
+              attributeName="dx"
+              values="0; -0.01"
+              begin="indefinite"
+              dur="1s"
+              fill="freeze"
+              repeatCount="indefinite"
+            />
+          </feOffset>
+          <feOffset result="r1" in="SourceGraphic" dy="0" dx=".01">
+            <animate
+              attributeName="dx"
+              values="0; 0.01"
+              begin="indefinite"
+              dur="1s"
+              fill="freeze"
+              repeatCount="indefinite"
+            />
+          </feOffset>
+          <feColorMatrix
+            result="r2"
+            values="1 0 0 0 0 0 1 0 0 1 0 0 1 0 1 0 0 0 1 0 "
+            in="r1"
+          />
+          <feColorMatrix
+            result="l2"
+            values="1 0 0 0 1 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 "
+            in="l1"
+          />
+          <feMerge>
+            <feMergeNode in="l2" />
+            <feMergeNode in="r2" />
+          </feMerge>
+          <feBlend mode="multiply" in2="l2" in="r2" />
+        </filter>
         <filter id="noiseFilter">
           <feTurbulence
+            id="turbulence"
             type="fractalNoise"
-            baseFrequency="0.05"
+            baseFrequency="0.98"
             numOctaves="3"
-            stitchTiles="stitch"
-            result="noise"
-          />
-          <feDiffuseLighting in='noise' lighting-color='white' surfaceScale='2'>
-            <feDistantLight azimuth='45' elevation='60' />
+            result="noise">
+          </feTurbulence>
+          <feDiffuseLighting in="noise" lighting-color="white" surfaceScale="2">
+            <feDistantLight azimuth="45" elevation="60" />
           </feDiffuseLighting>
         </filter>
-        <filter id="blurMe">
-          <feGaussianBlur stdDeviation="5">
-          <animate
-            attributeName="stdDeviation"
-            from="5"
-            to="1"
-            dur="1s"
-            fill="freeze"
-          />
+        <filter id="blurMe" primitiveUnits="objectBoundingBox">
+          <feGaussianBlur stdDeviation=".005">
+            <animate
+              attributeName="stdDeviation"
+              from=".005"
+              to=".01"
+              dur="1s"
+              fill="freeze"
+            />
           </feGaussianBlur>
         </filter>
       </defs>
@@ -109,133 +197,135 @@
           width="768px"
           fill="#90ee90"
           filter="url(#noiseFilter)"
-        ></rect>
-        <rect
-          x="0px"
-          height="224px"
-          y="1024px"
-          id="background_rect"
-          width="768px"
-          fill="#eeff90"
+          style="mix-blend-mode: multiply;"
         ></rect>
       </g>
-      <path
-        style="
-          fill: none;
-          stroke: #000000;
-          stroke-width: 10;
-          stroke-linecap: round;
-          stroke-linejoin: miter;
-          stroke-miterlimit: 4;
-          stroke-dasharray: none;
-          stroke-opacity: 1;
-          filter: url(#blurMe);
-        "
-        d="m 303.94691,543.10784 c 0,0 -64.31821,-145.49136 -17.4372,-220.38855 30.2641,-48.34998 74.08442,-71.30517 116.35826,-74.25156 29.01256,-2.02211 83.16004,9.9378 98.00639,31.59724"
-        id="path862"
-      >
-        <animate
-          attributeName="d"
-          values="
+      <g id="thing1">
+        <path
+          style="
+            fill: none;
+            stroke: #000000;
+            stroke-width: 10;
+            stroke-linecap: round;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 4;
+            stroke-dasharray: none;
+            stroke-opacity: 1;
+            filter: url(#blurMe);
+          "
+          d="m 303.94691,543.10784 c 0,0 -64.31821,-145.49136 -17.4372,-220.38855 30.2641,-48.34998 74.08442,-71.30517 116.35826,-74.25156 29.01256,-2.02211 83.16004,9.9378 98.00639,31.59724"
+          id="path862"
+        >
+          <animate
+            attributeName="d"
+            values="
           m 303.94691,543.10784 c 0,0 -58.48066,-179.38042 -35.31258,-277.20257 12.58434,-53.13459 26.81104,-73.68194 52.14002,-111.07546 28.86355,-42.61166 62.18614,-69.196743 90.9835,-79.73194;
           m 303.94691,543.10784 c 0,0 -68.05011,-144.46859 -23.50788,-256.81263 14.32405,-36.12799 34.32312,-77.97456 75.74942,-112.14862 39.70155,-32.75125 126.57542,-42.36788 141.42177,-20.70844;
           m 303.94691,543.10784 c 0,0 -64.31821,-145.49136 -17.4372,-220.38855 30.2641,-48.34998 74.08442,-71.30517 116.35826,-74.25156 29.01256,-2.02211 83.16004,9.9378 98.00639,31.59724;
           m 303.94691,543.10784 c 0,0 -59.64741,-138.91388 -6.70565,-209.657 53.78798,-71.87386 129.45677,-43.34797 146.40658,-29.17907 18.29052,15.28964 40.23386,39.98613 35.76343,68.08449;"
-          begin="indefinite"
-          id="animate1"
-          dur="1s"
-          fill="freeze"
-          repeatCount="indefinite"
-        ></animate>
-        <animateTransform
-          attributeName="transform"
-          begin="indefinite"
-          type="rotate"
-          from="0 304 540"
-          to="10 304 540"
-          dur="1s"
-          fill="freeze"
-          repeatCount="indefinite"
-        />
-      </path>
-      <circle
-        style="
-          fill: #000000;
-          fill-opacity: 1;
-          stroke-width: 1;
-          stroke-miterlimit: 4;
-          stroke-dasharray: none;
-        "
-        id="path2445"
-        cx="502.93515"
-        cy="282.0549"
-        r="10.796056"
-      >
-        <animate
-          attributeName="cx"
-          begin="indefinite"
-          values="410.64386; 498.64255; 502.93515; 479.41125;"
-          dur="1s"
-          fill="freeze"
-          repeatCount="indefinite"
-        />
-        <animate
-          attributeName="cy"
-          begin="indefinite"
-          values="77.082375; 153.27635; 282.0549; 372.35626;"
-          dur="1s"
-          fill="freeze"
-          repeatCount="indefinite"
-        />
-      </circle>
-      <path
+            begin="indefinite"
+            id="animate1"
+            dur="1s"
+            fill="freeze"
+            repeatCount="indefinite"
+          ></animate>
+          <animateTransform
+            attributeName="transform"
+            begin="indefinite"
+            type="rotate"
+            from="0 304 540"
+            to="10 304 540"
+            dur="1s"
+            fill="freeze"
+            repeatCount="indefinite"
+          />
+        </path>
+        <circle
+          style="
+            fill: #000000;
+            fill-opacity: 1;
+            stroke-width: 1;
+            stroke-miterlimit: 4;
+            stroke-dasharray: none;
+          "
+          id="path2445"
+          cx="502.93515"
+          cy="282.0549"
+          r="10.796056"
+        >
+          <animate
+            attributeName="cx"
+            begin="indefinite"
+            values="410.64386; 498.64255; 502.93515; 479.41125;"
+            dur="1s"
+            fill="freeze"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="cy"
+            begin="indefinite"
+            values="77.082375; 153.27635; 282.0549; 372.35626;"
+            dur="1s"
+            fill="freeze"
+            repeatCount="indefinite"
+          />
+        </circle>
+      </g>
+      <g
         stroke="#000000"
-        visibility="hidden"
-        stroke-width="3px"
-        id="path2"
-        d="M134,504 C113,440 397,352 439,477 "
-        fill="none"
-        transform=""
-      ></path>
-      <path
-        style="
-          fill: none;
-          stroke: #000000;
-          stroke-width: 8.92022;
-          stroke-linecap: round;
-          stroke-linejoin: miter;
-          stroke-miterlimit: 4;
-          stroke-dasharray: none;
-          stroke-opacity: 1;
-        "
-        d="
-      m 399.21863,569.48561 c 0,0 -54.43607,-121.11591 -6.11978,-182.79526 49.08857,-62.66522 118.14624,-37.79413 133.61516,-25.44058 16.69249,13.33069 36.71866,34.86301 32.63881,59.36134"
+        filter="url(#crayon)"
       >
-        <animate
-          attributeName="d"
-          values="
+        <g id="thing2">
+        <path
+          visibility="hidden"
+          stroke-width="3px"
+          id="path2"
+          d="M134,504 C113,440 397,352 439,477 "
+          fill="none"
+          transform=""
+        ></path>
+        <path
+          style="
+            fill: none;
+            stroke-width: 8.92022;
+            stroke-linecap: round;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 4;
+            stroke-dasharray: none;
+            stroke-opacity: 1;
+          "
+          d="
+      m 399.21863,569.48561 c 0,0 -54.43607,-121.11591 -6.11978,-182.79526 49.08857,-62.66522 118.14624,-37.79413 133.61516,-25.44058 16.69249,13.33069 36.71866,34.86301 32.63881,59.36134"
+        >
+          <animate
+            attributeName="d"
+            values="
           m 399.21863,569.48561 c 0,0 -53.37125,-156.39779 -32.22735,-241.68674 11.48486,-46.32686 24.46858,-64.24164 47.58459,-96.84422 26.34177,-37.15215 56.75299,-60.33109 83.03435,-69.5165;
           m 399.21863,569.48561 c 0,0 -62.10463,-125.95894 -21.45402,-223.90921 13.07257,-31.49919 31.32434,-67.98428 69.13126,-97.77988 36.23286,-28.55508 115.51663,-36.93961 129.06587,-18.05522;
           m 399.21863,569.48561 c 0,0 -58.69878,-126.85067 -15.91373,-192.15186 27.61995,-42.15527 67.61173,-62.16939 106.19214,-64.73828 26.47776,-1.76304 75.89442,8.66454 89.44366,27.54893;
+          m 399.21863,569.48561 c 0,0 -54.43607,-121.11591 -6.11978,-182.79526 49.08857,-62.66522 118.14624,-37.79413 133.61516,-25.44058 16.69249,13.33069 36.71866,34.86301 32.63881,59.36134;
           m 399.21863,569.48561 c 0,0 -54.43607,-121.11591 -6.11978,-182.79526 49.08857,-62.66522 118.14624,-37.79413 133.61516,-25.44058 16.69249,13.33069 36.71866,34.86301 32.63881,59.36134"
-          keyTimes="0; 0.2; 0.8; 1"
-          begin="indefinite"
-          dur="1s"
-          fill="freeze"
-          repeatCount="indefinite"
-        ></animate>
-        <animateTransform
-          attributeName="transform"
-          begin="indefinite"
-          type="rotate"
-          from="0 399 566"
-          to="15 399 566"
-          dur="1s"
-          fill="freeze"
-          repeatCount="indefinite"
-        />
-      </path>
-      <g transform="translate(20 65.5) scale(0.9 0.9)">
+            keyTimes="0; 0.1; 0.2; 0.3; 1"
+            begin="indefinite"
+            dur="1s"
+            fill="freeze"
+            repeatCount="indefinite"
+          ></animate>
+          <animateTransform
+            attributeName="transform"
+            begin="indefinite"
+            type="rotate"
+            from="0 399 566"
+            to="15 399 566"
+            dur="1s"
+            fill="freeze"
+            repeatCount="indefinite"
+          />
+        </path>
+        </g>
+      </g>
+      <use xlink:href="#thing2" style="stroke: #333;"></use>
+      <g filter="url(#anaglyph)" transform="translate(20 65.5) scale(0.9 0.9)">
         <path
           style="
             fill: none;
@@ -277,29 +367,29 @@
           />
         </path>
       </g>
-    <rect x="0" width="200" height="150" rx="15">
-      <animateTransform
-        attributeName="transform"
-        begin="indefinite"
-        type="translate"
-        from="0 876"
-        to="568 876"
-        dur="1s"
-        fill="freeze"
-        repeatCount="indefinite"
+      <rect x="0" width="200" height="150" rx="15">
+        <animateTransform
+          attributeName="transform"
+          begin="indefinite"
+          type="translate"
+          from="0 876"
+          to="568 876"
+          dur="1s"
+          fill="freeze"
+          repeatCount="indefinite"
+        />
+      </rect>
+    </svg>
+    <div class="controls">
+      <input
+        id="slider"
+        name="slider"
+        class="slider"
+        type="range"
+        min="0"
+        max="0.9999"
+        step="0.0001"
       />
-    </rect>
-  </svg>
-  <div class="controls">
-    <input
-      id="slider"
-      name="slider"
-      class="slider"
-      type="range"
-      min="0"
-      max="0.9999"
-      step="0.0001"
-    />
-  </div>
-</body>
+    </div>
+  </body>
 </html>
