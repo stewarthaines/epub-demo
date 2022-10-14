@@ -24,18 +24,23 @@
      inkscape:document-units="px"
      showgrid="false"
      units="px"
-     inkscape:zoom="0.46591611"
-     inkscape:cx="370.23832"
-     inkscape:cy="544.08936"
+     inkscape:zoom="1.151805"
+     inkscape:cx="560.42475"
+     inkscape:cy="400.67548"
      inkscape:window-width="1280"
      inkscape:window-height="751"
      inkscape:window-x="0"
      inkscape:window-y="23"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer4"
      height="768px" />
   <defs
      id="defs2">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect7259"
+       is_visible="true"
+       lpeversion="1" />
     <inkscape:path-effect
        effect="bend_path"
        id="path-effect1338"
@@ -125,6 +130,19 @@
        cy="77.082375"
        r="10.796056"
        inkscape:label="circle4" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="nob3_path">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 615.01648,201.74115 c 31.59162,9.1892 58.6339,32.91335 71.85706,63.04007 14.47903,32.988 12.38642,70.90785 5.33665,106.23704 -4.76071,23.85779 -11.65332,47.28974 -20.56887,69.92536"
+       id="nob3_path"
+       inkscape:path-effect="#path-effect7259"
+       inkscape:original-d="m 615.01648,201.74115 c 35.23998,6.25492 54.72758,31.05854 71.85706,63.04007 18.40931,34.37103 13.56771,61.72821 5.33665,106.23704 -4.56384,24.67863 -6.76596,45.1709 -20.56887,69.92536"
+       sodipodi:nodetypes="cssc"
+       inkscape:label="nob3_path" />
   </g>
   <g
      inkscape:groupmode="layer"

@@ -5,7 +5,7 @@ var output;
 var dragging = false;
 window.addEventListener("DOMContentLoaded", reset, false);
 function setBegin(value) {
-  ["animate", "animateTransform"].forEach(function (tag) {
+  ["animate", "animateTransform", "animateMotion"].forEach(function (tag) {
     console.log(tag);
     var c = svg.getElementsByTagName(tag);
     var i;
